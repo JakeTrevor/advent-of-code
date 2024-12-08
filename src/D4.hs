@@ -3,17 +3,14 @@ module D4 (d4) where
 import Data.Functor (($>))
 import Data.List (intercalate, transpose)
 import Data.Maybe (catMaybes)
-import Lib (DaySolution, Solution, safeParse)
-import Text.Parsec (Parsec, anyChar, choice, many1, string, try)
+import Lib (DaySolution, Solution, parseChar, safeParse)
+import Text.Parsec (Parsec, choice, many1, string, try)
 
 d4 :: DaySolution
 d4 = (d4e1, d4e2)
 
 parseXMAS :: Parsec String () (Maybe ())
 parseXMAS = string "XMAS" $> Just ()
-
-parseChar :: Parsec String () (Maybe a)
-parseChar = anyChar $> Nothing
 
 parseXmases :: Parsec String () [Maybe ()]
 parseXmases = many1 (choice [try parseXMAS, parseChar])

@@ -5,8 +5,8 @@ module D3 (d3) where
 
 import Data.Functor (($>))
 import Data.Maybe (catMaybes)
-import Lib (DaySolution, Solution, safeParse)
-import Text.Parsec (Parsec, anyChar, char, choice, digit, many1, optionMaybe, string, try)
+import Lib (DaySolution, Solution, parseChar, safeParse)
+import Text.Parsec (Parsec, char, choice, digit, many1, optionMaybe, string, try)
 
 d3 :: DaySolution
 d3 = (d3e1, d3e2)
@@ -40,9 +40,6 @@ parseDo = string "do()" $> Just Do
 
 parseDon't :: Parsec String () (Maybe Instruction)
 parseDon't = string "don't()" $> Just Don't
-
-parseChar :: Parsec String () (Maybe a)
-parseChar = anyChar $> Nothing
 
 parseMuls :: Parsec String () [Maybe Instruction]
 parseMuls = many1 (choice [try parseMul, parseChar])
