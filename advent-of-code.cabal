@@ -31,6 +31,8 @@ library
       D5
       D6
       D7
+      D8
+      D9
       Lib
   other-modules:
       Paths_advent_of_code

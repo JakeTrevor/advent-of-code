@@ -7,11 +7,12 @@ import D4 (d4)
 import D5 (d5)
 import D6 (d6)
 import D7 (d7)
+import D8 (d8)
 import Lib (DaySolution)
 import Options.Applicative
 
 days :: [DaySolution]
-days = [(const "d0.1", const "d0.2"), d1, d2, d3, d4, d5, d6, d7]
+days = [(const "d0.1", const "d0.2"), d1, d2, d3, d4, d5, d6, d7, d8]
 
 data Config = MkConfig
   { year :: Int,
