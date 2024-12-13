@@ -44,11 +44,51 @@ d9e1 (_, contents) = ans
 
 -- part 2 is hard
 
+data FSObject = File {fSize :: Int, fId :: Int, moved :: Bool} | FEmpty Int
+
+instance Show FSObject where
+  show File {fSize = sz, fId = id} = concat $ replicate sz $ show id
+  show (FEmpty sz) = concat . replicate sz $ "."
+
+convertList :: Int -> [Int] -> [FSObject]
+convertList _ [] = []
+convertList n [x] = [File x n False]
+convertList n (x : y : rest) = newFile : FEmpty y : convertList (n + 1) rest
+  where
+    newFile = File x n False
+
+normalise :: [FSObject] -> [FSObject]
+normalise [] = []
+normalise (f@File {moved = True} : rest) = f : normalise rest
+normalise (f@(FEmpty _) : rest) = f : normalise rest
+normalise (f : rest) = normalise $ move f {moved = True} rest
+
+move :: FSObject -> [FSObject] -> [FSObject]
+move f@File {fSize = sz} fs = ans
+  where
+    (lst, didMove) = shift f $ reverse fs
+    lst' = reverse lst
+    modified = FEmpty sz : lst'
+    ans = if didMove then modified else lst'
+move _ _ = error "cannot call on anything else"
+
+shift :: FSObject -> [FSObject] -> ([FSObject], Bool)
+shift f [] = ([f], False)
+shift f@File {fSize = fsz} (e@(FEmpty esz) : rest)
+  | esz == fsz = (f : rest, True)
+  | esz > fsz = (f : FEmpty (esz - fsz) : rest, True)
+  | otherwise = let (lst, didMove) = shift f rest in (e : lst, didMove)
+shift f (e : rest) = let (lst, didMove) = shift f rest in (e : lst, didMove)
+
+expandFSObject :: FSObject -> [Int]
+expandFSObject (FEmpty sz) = replicate sz 0
+expandFSObject (File {fSize = sz, fId = fid}) = replicate sz fid
+
 d9e2 :: Solution
 d9e2 (_, contents) = ans
   where
     nums = [read [c] | c <- contents]
-    expanded = expandDiskMap 0 nums
-    fixed = reverse . compactify 0 $ reverse expanded
-    total = checkSum $ catMaybes fixed
+    fList = convertList 0 nums
+    fixed = reverse . normalise . reverse $ fList
+    total = checkSum $ concatMap expandFSObject fixed
     ans = show total
