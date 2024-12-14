@@ -1,6 +1,7 @@
 module Main (main) where
 
 import D1 (d1)
+import D10 (d10)
 import D2 (d2)
 import D3 (d3)
 import D4 (d4)
@@ -13,7 +14,7 @@ import Lib (DaySolution)
 import Options.Applicative
 
 days :: [DaySolution]
-days = [(const "d0.1", const "d0.2"), d1, d2, d3, d4, d5, d6, d7, d8, d9]
+days = [(const "d0.1", const "d0.2"), d1, d2, d3, d4, d5, d6, d7, d8, d9, d10]
 
 data Config = MkConfig
   { year :: Int,

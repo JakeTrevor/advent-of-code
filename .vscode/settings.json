@@ -4,6 +4,7 @@
         "Elem",
         "fixup",
         "INDIR",
+        "ints",
         "metavar",
         "Muls",
         "uncurry",

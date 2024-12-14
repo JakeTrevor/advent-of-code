@@ -25,6 +25,7 @@ source-repository head
 library
   exposed-modules:
       D1
+      D10
       D2
       D3
       D4
